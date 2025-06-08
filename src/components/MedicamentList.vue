@@ -1,10 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import CarteMedicament from './MedicamentCard.vue';
 import FormulaireMedicament from './MedicamentForm.vue';
 import RechercheMedicament from './MedicamentSearch.vue';
 
-const ID_PHARMACIE = "27";
+const ID_PHARMACIE = "";
 const URL_API = `https://apipharmacie.pecatte.fr/api/${ID_PHARMACIE}/medicaments`;
 
 const recherche = ref('');
@@ -91,6 +91,10 @@ const sauvegarderModification = () => {
   });
 };
 
+watch(recherche, () => {
+  chargerMedicaments();
+});
+
 onMounted(() => {
   chargerMedicaments();
   setTimeout(() => {
@@ -105,19 +109,27 @@ onMounted(() => {
       {{ messageAccueil }}
     </p>
 
-    <RechercheMedicament v-model="recherche" @rechercher="chargerMedicaments" />
-    <FormulaireMedicament @ajouter="ajouterMedicament" />
+    <RechercheMedicament v-model="recherche" />
+    <FormulaireMedicament :onAjouter="ajouterMedicament" />
 
     <ul>
-      <li v-for="m in listeMedicaments" :key="m.id" style="display: flex; align-items: start; gap: 20px; margin-bottom: 20px;">
+      <li
+        v-for="m in listeMedicaments"
+        :key="m.id"
+        style="display: flex; align-items: start; gap: 20px; margin-bottom: 20px;"
+      >
         <CarteMedicament
           :medicament="m"
-          @supprimer="supprimerMedicament"
-          @modifierQuantite="modifierQuantite"
-          @demanderModification="demanderModification"
+          :onSupprimer="supprimerMedicament"
+          :onModifierQuantite="modifierQuantite"
+          :onDemanderModification="demanderModification"
         />
 
-        <div v-if="medicamentAModifier && medicamentAModifier.id === m.id" class="modif-container" style="border-left: 1px solid #ccc; padding-left: 10px;">
+        <div
+          v-if="medicamentAModifier && medicamentAModifier.id === m.id"
+          class="modif-container"
+          style="border-left: 1px solid #ccc; padding-left: 10px;"
+        >
           <h4>Modifier</h4>
           <input type="text" v-model="nomModifie" placeholder="Nom" />
           <input type="text" v-model="formeModifiee" placeholder="Forme" />
@@ -135,3 +147,9 @@ onMounted(() => {
   </div>
 </template>
 
+<style scoped>
+ul {
+  padding: 0;
+  list-style: none;
+}
+</style>

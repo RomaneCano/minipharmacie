@@ -1,16 +1,19 @@
 <script setup>
 import { ref } from 'vue';
 
+const props = defineProps({
+  onAjouter: Function
+});
+
 const nom = ref('');
 const forme = ref('');
 const quantite = ref(1);
 const photoBase64 = ref('');
 
-const emettre = defineEmits(['ajouter']);
-
 const televerserImage = (e) => {
   const fichier = e.target.files[0];
   if (!fichier) return;
+
   const lecteur = new FileReader();
   lecteur.onload = () => {
     photoBase64.value = lecteur.result.split(',')[1];
@@ -19,7 +22,7 @@ const televerserImage = (e) => {
 };
 
 const ajouter = () => {
-  emettre('ajouter', {
+  props.onAjouter({
     denomination: nom.value,
     formepharmaceutique: forme.value,
     qte: quantite.value,
@@ -38,7 +41,6 @@ const reinitialiserChamps = () => {
   quantite.value = 1;
   photoBase64.value = '';
 };
-
 </script>
 
 <template>
@@ -50,8 +52,11 @@ const reinitialiserChamps = () => {
     <input type="number" v-model="quantite" min="0" />
     <button @click="ajouter">Ajouter</button>
     <button @click="reinitialiserChamps" type="button">Réinitialiser</button>
-    <button @click="chargerMedicaments" style="margin: 10px;">Recharger la liste</button>
-
-
   </div>
 </template>
+
+<style scoped>
+div {
+  margin-bottom: 20px;
+}
+</style>

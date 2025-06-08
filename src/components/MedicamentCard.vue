@@ -1,13 +1,16 @@
 <script setup>
-defineProps(['medicament']);
-const emettre = defineEmits(['supprimer', 'modifierQuantite', 'demanderModification']);
+const props = defineProps({
+  medicament: Object,
+  onSupprimer: Function,
+  onModifierQuantite: Function,
+  onDemanderModification: Function
+});
 
 const emojiQuantite = (quantite) => {
   if (quantite >= 10) return "😃";
   if (quantite >= 5) return "😐";
   return "😟";
 };
-
 </script>
 
 <template>
@@ -18,12 +21,23 @@ const emojiQuantite = (quantite) => {
     <p v-if="medicament.qte === 0" style="color: red; font-weight: bold;">
       ⚠️ Ce médicament est en rupture de stock
     </p>
-    <img v-bind:src="'https://apipharmacie.pecatte.fr/images/' + medicament.photo"
-      alt="image" width="100" />
-    <button @click="emettre('modifierQuantite', medicament, 1)">+1</button>
-    <button @click="emettre('modifierQuantite', medicament, -1)">-1</button>
-    <button @click="emettre('supprimer', medicament.id)">Supprimer</button>
-    <button @click="emettre('demanderModification', medicament)">✏ Modifier</button>
-
+    <img
+      :src="'https://apipharmacie.pecatte.fr/images/' + medicament.photo"
+      alt="image"
+      width="100"
+    />
+    <button @click="onModifierQuantite(medicament, 1)">+1</button>
+    <button @click="onModifierQuantite(medicament, -1)">-1</button>
+    <button @click="onSupprimer(medicament.id)">Supprimer</button>
+    <button @click="onDemanderModification(medicament)">✏ Modifier</button>
   </li>
 </template>
+
+<style scoped>
+.carte-medicament {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+</style>

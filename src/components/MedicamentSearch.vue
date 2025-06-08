@@ -1,6 +1,5 @@
 <script setup>
-const recherche = defineModel();
-const emettre = defineEmits(['rechercher']);
+const recherche = defineModel(); 
 </script>
 
 <template>
@@ -8,7 +7,13 @@ const emettre = defineEmits(['rechercher']);
     <input
       v-model="recherche"
       placeholder="Rechercher un médicament"
-      @input="emettre('rechercher')"
     />
   </div>
 </template>
+
+<style scoped>
+input {
+  width: 100%;
+  margin-bottom: 20px;
+}
+</style>
