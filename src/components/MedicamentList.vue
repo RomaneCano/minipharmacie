@@ -4,7 +4,7 @@ import CarteMedicament from './MedicamentCard.vue';
 import FormulaireMedicament from './MedicamentForm.vue';
 import RechercheMedicament from './MedicamentSearch.vue';
 
-const ID_PHARMACIE = "";
+const ID_PHARMACIE = "1";
 const URL_API = `https://apipharmacie.pecatte.fr/api/${ID_PHARMACIE}/medicaments`;
 
 const recherche = ref('');
